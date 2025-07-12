@@ -1,84 +1,10 @@
-### Java ###
-*.class
-*.jar
-*.war
-*.ear
-
-# Gradle
-.gradle
-build/
-!gradle/wrapper/gradle-wrapper.jar
-**/out/
-**/build/
-
-# Maven
-target/
-pom.xml.tag
-pom.xml.releaseBackup
-pom.xml.versionsBackup
-pom.xml.next
-release.properties
-
-# Logs
-*.log
-*.log.*
-
-# Lombok
-**/lombok.config
-
-# Temporary files
-*.tmp
-*.swp
-
-### Spring Boot ###
-spring.log
-application*.yml
-application*.properties
-.env
-
-### React ###
-node_modules/
-dist/
-build/
-.env
-.env.local
-.env.*.local
-.vite/
-
-### IntelliJ IDEA ###
-.idea/
-*.iml
-*.iws
-*.ipr
-out/
-
-# Auto-save
-# IntelliJ specific
-.idea_modules/
-*.name
-*.shelf/
-*.orig
-
-### VSCode ###
-.vscode/
-.history/
-.code-workspace
-
-### OS files ###
 .DS_Store
-Thumbs.db
-
-### Docker ###
-**/.env
-**/.env.local
-**/.envrc
+*.log
+*.tmp
+.env
 docker-compose.override.yml
 
-### Others ###
-*.bak
-*.tmp
-*.log
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-pnpm-debug.log*
+# IDEs
+.idea/
+.vscode/
+*.iml
