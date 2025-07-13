@@ -1,0 +1,19 @@
+import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+// Update the import path if the file is named keycloakUtility.ts and located in src/utils
+import { prepareHeaders } from "@/utils/keycloakUtility";
+import type { Me } from "./types";
+
+export const pegaspayAPI = createApi({
+  reducerPath: "pegaspayAPI",
+  baseQuery: fetchBaseQuery({
+    baseUrl: "/be",
+    prepareHeaders,
+  }),
+  endpoints: (builder) => ({
+    getMe: builder.query<Me, void>({
+      query: () => "/api/me",
+    }),
+  }),
+});
+
+export const { useGetMeQuery } = pegaspayAPI;

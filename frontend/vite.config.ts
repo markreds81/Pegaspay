@@ -10,4 +10,14 @@ export default defineConfig({
       "@": path.resolve(__dirname, "./src"),
     },
   },
+  server: {
+    proxy: {
+      "/be": {
+        target: "http://localhost:8081",
+        changeOrigin: true,
+        secure: false,
+        rewrite: (path) => path.replace(/^\/be/, ''),
+      },
+    },
+  },
 })

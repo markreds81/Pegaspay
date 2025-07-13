@@ -4,6 +4,8 @@ import './index.css'
 import App from './App.tsx'
 import { ReactKeycloakProvider } from '@react-keycloak/web'
 import keycloak from './keycloak.ts'
+import { Provider } from "react-redux";
+import { store } from "./store";
 
 createRoot(document.getElementById('root')!).render(
 
@@ -16,6 +18,10 @@ createRoot(document.getElementById('root')!).render(
       silentCheckSsoRedirectUri: window.location.origin + "/silent-check-sso.html"
     }}
   >
-    <StrictMode><App /></StrictMode>
+    <StrictMode>
+      <Provider store={store}>
+        <App />
+      </Provider>
+    </StrictMode>
   </ReactKeycloakProvider>
 )
