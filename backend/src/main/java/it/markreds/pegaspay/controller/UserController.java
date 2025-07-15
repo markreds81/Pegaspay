@@ -10,9 +10,9 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/api/me")
-public class MeController {
-    @GetMapping
+@RequestMapping("/member")
+public class UserController {
+    @GetMapping("/me")
     @SuppressWarnings("unchecked")
     public Map<String, Object> me(@AuthenticationPrincipal Jwt principal) {
         String username = principal.getClaimAsString("preferred_username");

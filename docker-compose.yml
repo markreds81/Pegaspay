@@ -18,6 +18,15 @@ services:
     environment:
       KEYCLOAK_ADMIN: admin
       KEYCLOAK_ADMIN_PASSWORD: admin
+      KC_DB: postgres
+      KC_DB_URL_HOST: postgres
+      KC_DB_PORT: 5432
+      KC_DB_USERNAME: pp_user
+      KC_DB_PASSWORD: pp_pass
+      KC_DB_URL_DATABASE: pegaspay_db
+      KC_DB_SCHEMA: keycloak_dev
+    depends_on:
+      - postgres
     ports:
       - "8080:8080"
 
