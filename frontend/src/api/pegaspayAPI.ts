@@ -11,7 +11,7 @@ export const pegaspayAPI = createApi({
   }),
   endpoints: (builder) => ({
     getMe: builder.query<Me, void>({
-      query: () => "/api/me",
+      query: () => "/member/me",
     }),
   }),
 });
