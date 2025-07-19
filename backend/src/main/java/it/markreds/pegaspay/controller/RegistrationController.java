@@ -2,6 +2,7 @@ package it.markreds.pegaspay.controller;
 
 import it.markreds.pegaspay.dto.UserRegistration;
 import it.markreds.pegaspay.service.RegistrationService;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
@@ -16,11 +17,14 @@ public class RegistrationController {
     }
 
     @PostMapping("/register")
-    public Map<String, Object> register(@RequestBody UserRegistration request) {
-        String activationCode = registrationService.registerUser(request);
+    public Map<String, Object> register(@RequestBody UserRegistration userData, HttpServletRequest httpRequest) {
+        String activationCode = registrationService.registerUser(userData);
+        String baseUrl = httpRequest.getRequestURL().toString().replace(httpRequest.getRequestURI(), "");
+        String activationLink = baseUrl + "/public/activate?code=" + activationCode;
         return Map.of(
                 "activationCode", activationCode,
-                "message", "Registration successful. Check your email for the activation code"
+                "activationLink", activationLink,
+                "message", "Registration successful. Check your email for the activation code."
         );
     }
 

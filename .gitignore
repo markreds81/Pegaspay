@@ -3,6 +3,7 @@
 *.tmp
 .env
 docker-compose.override.yml
+*-dev.properties
 
 # IDEs
 .idea/

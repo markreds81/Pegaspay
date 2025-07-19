@@ -19,12 +19,12 @@ public class RegistrationService {
         this.keycloakUserService = keycloakUserService;
     }
 
-    public String registerUser(UserRegistration request) {
-        if (userRepository.existsByUsernameIgnoreCase(request.username())) {
+    public String registerUser(UserRegistration registration) {
+        if (userRepository.existsByUsernameIgnoreCase(registration.username())) {
             throw new IllegalArgumentException("Username già registrato");
         }
 
-        if (userRepository.existsByEmailIgnoreCase(request.email())) {
+        if (userRepository.existsByEmailIgnoreCase(registration.email())) {
             throw new IllegalArgumentException("Email già registrata");
         }
 
@@ -33,10 +33,10 @@ public class RegistrationService {
 
         // crea il nuovo utente
         AccountUser user = new AccountUser();
-        user.setUsername(request.username());
-        user.setFirstName(request.firstName());
-        user.setLastName(request.lastName());
-        user.setEmail(request.email());
+        user.setUsername(registration.username());
+        user.setFirstName(registration.firstName());
+        user.setLastName(registration.lastName());
+        user.setEmail(registration.email());
         user.setActive(false);
         user.setActivationCode(activationCode);
         userRepository.save(user);
@@ -47,12 +47,16 @@ public class RegistrationService {
     public String activateUser(String code) {
         AccountUser user = userRepository.findByActivationCode(code)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+
         if (user.isActive()) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "Utente già attivo");
         }
 
-
         String userId = keycloakUserService.createUser(new UserRegistration(user.getUsername(), "welcome", user.getEmail(), user.getFirstName(), user.getLastName()));
+        if (userId == null || userId.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.SERVICE_UNAVAILABLE, "Si è verificato un errore con il servizio di autenticazione");
+        }
+
         user.setKeycloakId(UUID.fromString(userId));
         user.setActive(true);
         userRepository.save(user);
