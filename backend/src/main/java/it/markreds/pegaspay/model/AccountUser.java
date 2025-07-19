@@ -9,6 +9,7 @@ import java.util.UUID;
 @Table(name = "account_user", schema = "pegaspay")
 public class AccountUser {
     @Id
+    @Column(name = "pkid")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 

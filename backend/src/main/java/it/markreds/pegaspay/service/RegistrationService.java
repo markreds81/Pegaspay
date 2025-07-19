@@ -2,7 +2,9 @@ package it.markreds.pegaspay.service;
 
 import it.markreds.pegaspay.dto.UserRegistration;
 import it.markreds.pegaspay.model.AccountUser;
+import it.markreds.pegaspay.model.Wallet;
 import it.markreds.pegaspay.repository.AccountUserRepository;
+import it.markreds.pegaspay.repository.WalletRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -12,10 +14,12 @@ import java.util.UUID;
 @Service
 public class RegistrationService {
     private final AccountUserRepository userRepository;
+    private final WalletRepository walletRepository;
     private final KeycloakUserService keycloakUserService;
 
-    public RegistrationService(AccountUserRepository userRepository, KeycloakUserService keycloakUserService) {
+    public RegistrationService(AccountUserRepository userRepository, WalletRepository walletRepository, KeycloakUserService keycloakUserService) {
         this.userRepository = userRepository;
+        this.walletRepository = walletRepository;
         this.keycloakUserService = keycloakUserService;
     }
 
@@ -61,6 +65,9 @@ public class RegistrationService {
         user.setActive(true);
         userRepository.save(user);
 
+        Wallet wallet = new Wallet();
+        wallet.setAccountUser(user);
+        walletRepository.save(wallet);
         return userId;
     }
 }
