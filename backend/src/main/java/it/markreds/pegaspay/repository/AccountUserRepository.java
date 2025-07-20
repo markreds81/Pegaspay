@@ -11,6 +11,10 @@ import java.util.UUID;
 public interface AccountUserRepository extends JpaRepository<AccountUser, UUID> {
     Optional<AccountUser> findByActivationCode(String code);
 
+    Optional<AccountUser> findById(Long userId);
+
+    Optional<AccountUser> findByKeycloakId(UUID keycloakId);
+
     boolean existsByUsernameIgnoreCase(String username);
 
     boolean existsByEmailIgnoreCase(String email);

@@ -1,5 +1,8 @@
 package it.markreds.pegaspay.controller;
 
+import it.markreds.pegaspay.dto.WalletDto;
+import it.markreds.pegaspay.model.Wallet;
+import it.markreds.pegaspay.service.AccountUserService;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -8,10 +11,17 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/member")
-public class UserController {
+public class MemberController {
+    private final AccountUserService accountUserService;
+
+    public MemberController(AccountUserService accountUserService) {
+        this.accountUserService = accountUserService;
+    }
+
     @GetMapping("/me")
     @SuppressWarnings("unchecked")
     public Map<String, Object> me(@AuthenticationPrincipal Jwt principal) {
@@ -36,5 +46,17 @@ public class UserController {
                 "subject", subject,
                 "roles", roles
         );
+    }
+
+    @GetMapping("/wallet")
+    public WalletDto wallet(@AuthenticationPrincipal Jwt principal) {
+        UUID userId = UUID.fromString(principal.getSubject());
+        Wallet wallet = accountUserService.getWalletOf(userId);
+        return new WalletDto(
+                wallet.getBalance(),
+                wallet.getCurrency(),
+                wallet.getCreatedAt(),
+                wallet.getAccountUser().getFirstName(),
+                wallet.getAccountUser().getLastName());
     }
 }

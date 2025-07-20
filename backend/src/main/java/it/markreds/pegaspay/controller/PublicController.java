@@ -9,10 +9,10 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/public")
-public class RegistrationController {
+public class PublicController {
     private final RegistrationService registrationService;
 
-    public RegistrationController(RegistrationService registrationService) {
+    public PublicController(RegistrationService registrationService) {
         this.registrationService = registrationService;
     }
 

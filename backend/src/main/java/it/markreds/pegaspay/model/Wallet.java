@@ -3,6 +3,7 @@ package it.markreds.pegaspay.model;
 import jakarta.persistence.*;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "wallets", schema = "pegaspay")
@@ -22,6 +23,9 @@ public class Wallet {
     @Column(length = 3, nullable = false)
     private String currency = "EUR";
 
+    @Column(name = "created_at")
+    private LocalDateTime createdAt;
+
     public Wallet() {
     }
 
@@ -29,7 +33,11 @@ public class Wallet {
         this.accountUser = accountUser;
     }
 
-    // Getters e Setters
+    @PrePersist
+    protected void onCreate() {
+        createdAt = LocalDateTime.now();
+    }
+
     public Long getId() {
         return id;
     }
@@ -56,5 +64,9 @@ public class Wallet {
 
     public void setCurrency(String currency) {
         this.currency = currency;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
     }
 }
