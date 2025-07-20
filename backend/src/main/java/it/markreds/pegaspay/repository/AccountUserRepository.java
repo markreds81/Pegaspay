@@ -13,6 +13,8 @@ public interface AccountUserRepository extends JpaRepository<AccountUser, UUID> 
 
     Optional<AccountUser> findById(Long userId);
 
+    Optional<AccountUser> findByEmail(String username);
+
     Optional<AccountUser> findByKeycloakId(UUID keycloakId);
 
     boolean existsByUsernameIgnoreCase(String username);

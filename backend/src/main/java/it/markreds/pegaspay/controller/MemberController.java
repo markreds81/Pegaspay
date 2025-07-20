@@ -1,13 +1,13 @@
 package it.markreds.pegaspay.controller;
 
+import it.markreds.pegaspay.dto.TransferRequest;
+import it.markreds.pegaspay.dto.TransferResult;
 import it.markreds.pegaspay.dto.WalletDto;
 import it.markreds.pegaspay.model.Wallet;
 import it.markreds.pegaspay.service.AccountUserService;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
@@ -58,5 +58,13 @@ public class MemberController {
                 wallet.getCreatedAt(),
                 wallet.getAccountUser().getFirstName(),
                 wallet.getAccountUser().getLastName());
+    }
+
+    @PostMapping("/transfer")
+    public TransferResult transfer(@AuthenticationPrincipal Jwt principal, @RequestBody TransferRequest request) {
+        return accountUserService.transfer(
+                UUID.fromString(principal.getSubject()),
+                request.toUserEmail(),
+                request.amount());
     }
 }

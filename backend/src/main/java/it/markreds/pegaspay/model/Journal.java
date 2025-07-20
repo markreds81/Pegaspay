@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 
 @Entity
 @Table(name = "journal", schema = "pegaspay")
@@ -12,6 +13,9 @@ public class Journal {
     @Column(name = "pkid")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(name = "journal_id", nullable = false, unique = true)
+    private UUID journalId;
 
     private String description;
 
@@ -22,16 +26,21 @@ public class Journal {
     private List<LedgerEntry> entries;
 
     public Journal() {
-        this.createdAt = LocalDateTime.now();
+
     }
 
-    public Journal(String description) {
-        this.description = description;
-        this.createdAt = LocalDateTime.now();
+    @PrePersist
+    protected void onCreate() {
+        createdAt = LocalDateTime.now();
+        journalId = UUID.randomUUID();
     }
 
     public Long getId() {
         return id;
+    }
+
+    public UUID getJournalId() {
+        return journalId;
     }
 
     public String getDescription() {
@@ -44,6 +53,10 @@ public class Journal {
 
     public LocalDateTime getCreatedAt() {
         return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
     }
 
     public List<LedgerEntry> getEntries() {
