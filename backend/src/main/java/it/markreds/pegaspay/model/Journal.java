@@ -14,8 +14,8 @@ public class Journal {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "journal_id", nullable = false, unique = true)
-    private UUID journalId;
+    @Column(name = "reference_id", nullable = false, unique = true, updatable = false)
+    private UUID referenceId;
 
     private String description;
 
@@ -32,15 +32,15 @@ public class Journal {
     @PrePersist
     protected void onCreate() {
         createdAt = LocalDateTime.now();
-        journalId = UUID.randomUUID();
+        referenceId = UUID.randomUUID();
     }
 
     public Long getId() {
         return id;
     }
 
-    public UUID getJournalId() {
-        return journalId;
+    public UUID getReferenceId() {
+        return referenceId;
     }
 
     public String getDescription() {
@@ -53,10 +53,6 @@ public class Journal {
 
     public LocalDateTime getCreatedAt() {
         return createdAt;
-    }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
     }
 
     public List<LedgerEntry> getEntries() {

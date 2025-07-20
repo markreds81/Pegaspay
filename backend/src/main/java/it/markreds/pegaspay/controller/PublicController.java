@@ -33,7 +33,7 @@ public class PublicController {
         String keycloakId = registrationService.activateUser(code);
         return Map.of(
                 "keycloakSubject", keycloakId,
-                "mesagge", "Activation successful. You can now login with your Keycloak account"
+                "message", "Activation successful. You can now login with your Keycloak account."
         );
     }
 }

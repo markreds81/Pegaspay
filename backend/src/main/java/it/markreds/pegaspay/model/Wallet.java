@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Entity
 @Table(name = "wallets", schema = "pegaspay")
@@ -12,6 +13,9 @@ public class Wallet {
     @Column(name = "pkid")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(name = "reference_id", nullable = false, unique = true, updatable = false)
+    private UUID referenceId;
 
     @OneToOne
     @JoinColumn(name = "fk_account_user", nullable = false, unique = true)
@@ -36,10 +40,15 @@ public class Wallet {
     @PrePersist
     protected void onCreate() {
         createdAt = LocalDateTime.now();
+        referenceId = UUID.randomUUID();
     }
 
     public Long getId() {
         return id;
+    }
+
+    public UUID getReferenceId() {
+        return referenceId;
     }
 
     public AccountUser getAccountUser() {

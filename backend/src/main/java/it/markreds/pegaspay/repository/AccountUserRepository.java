@@ -8,14 +8,14 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Repository
-public interface AccountUserRepository extends JpaRepository<AccountUser, UUID> {
+public interface AccountUserRepository extends JpaRepository<AccountUser, Long> {
     Optional<AccountUser> findByActivationCode(String code);
 
-    Optional<AccountUser> findById(Long userId);
-
-    Optional<AccountUser> findByEmail(String username);
+    Optional<AccountUser> findByEmailIgnoreCase(String username);
 
     Optional<AccountUser> findByKeycloakId(UUID keycloakId);
+
+    Optional<AccountUser> findByUsernameIgnoreCase(String username);
 
     boolean existsByUsernameIgnoreCase(String username);
 

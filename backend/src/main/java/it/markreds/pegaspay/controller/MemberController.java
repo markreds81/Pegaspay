@@ -1,5 +1,6 @@
 package it.markreds.pegaspay.controller;
 
+import it.markreds.pegaspay.dto.RedeemResult;
 import it.markreds.pegaspay.dto.TransferRequest;
 import it.markreds.pegaspay.dto.TransferResult;
 import it.markreds.pegaspay.dto.WalletDto;
@@ -58,6 +59,12 @@ public class MemberController {
                 wallet.getCreatedAt(),
                 wallet.getAccountUser().getFirstName(),
                 wallet.getAccountUser().getLastName());
+    }
+
+    @PostMapping("/redeem")
+    public RedeemResult redeemCode(@AuthenticationPrincipal Jwt principal, @RequestBody String code) {
+        UUID userId = UUID.fromString(principal.getSubject());
+        return accountUserService.redeemCode(userId, code);
     }
 
     @PostMapping("/transfer")
