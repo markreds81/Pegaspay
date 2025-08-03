@@ -1,7 +1,6 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { prepareHeaders } from "@/utils/keycloakUtility";
 import type { Me, UserRegistration, RegisterResponse, Wallet, Journal } from "./types";
-import type { get } from "http";
 
 export const pegaspayAPI = createApi({
   reducerPath: "pegaspayAPI",
