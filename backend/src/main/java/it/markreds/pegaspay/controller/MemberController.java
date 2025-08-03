@@ -1,9 +1,6 @@
 package it.markreds.pegaspay.controller;
 
-import it.markreds.pegaspay.dto.RedeemResult;
-import it.markreds.pegaspay.dto.TransferRequest;
-import it.markreds.pegaspay.dto.TransferResult;
-import it.markreds.pegaspay.dto.WalletDto;
+import it.markreds.pegaspay.dto.*;
 import it.markreds.pegaspay.model.Wallet;
 import it.markreds.pegaspay.service.AccountUserService;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -59,6 +56,13 @@ public class MemberController {
                 wallet.getCreatedAt(),
                 wallet.getAccountUser().getFirstName(),
                 wallet.getAccountUser().getLastName());
+    }
+
+    @GetMapping("/journal")
+    public List<JournalTransaction> journal(@AuthenticationPrincipal Jwt principal) {
+        UUID userId = UUID.fromString(principal.getSubject());
+        Wallet wallet = accountUserService.getWalletOf(userId);
+        return accountUserService.getJournal(wallet);
     }
 
     @PostMapping("/redeem")

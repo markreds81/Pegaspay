@@ -9,6 +9,23 @@ export interface Me {
     roles: string[];
 }
 
+export interface Wallet {
+    balance: number;
+    currency: string;
+    createdAt: string;
+    ownerFirstName: string;
+    ownerLastName: string;
+}
+
+export interface Journal {
+    referenceId: string;
+    createdAt: string;
+    description: string;
+    credit: number;
+    debit: number;
+    note: string;
+}
+
 export interface UserRegistration {
     username: string;
     password: string;

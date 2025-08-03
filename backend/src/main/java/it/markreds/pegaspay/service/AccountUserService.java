@@ -1,20 +1,37 @@
 package it.markreds.pegaspay.service;
 
+import it.markreds.pegaspay.dto.JournalTransaction;
 import it.markreds.pegaspay.dto.RedeemResult;
 import it.markreds.pegaspay.dto.TransferResult;
 import it.markreds.pegaspay.model.*;
 import it.markreds.pegaspay.repository.*;
 import org.springframework.http.HttpStatus;
+import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.UUID;
 
 @Service
 public class AccountUserService {
     private static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(AccountUserService.class);
+
+    private static final String SQL_JOURNAL = """
+            select
+            	jo.created_at,
+            	jo.reference_id,
+            	jo.description,
+            	coalesce(le.credit, 0) as credit,
+                coalesce(le.debit, 0) as debit,
+            	le.note
+            from pegaspay.ledger_entries le
+            left join pegaspay.journal jo on (jo.pkid = le.journal_id)
+            where le.wallet_id = ?
+            order by jo.created_at desc
+            """;
 
     private final AccountUserRepository userRepository;
     private final RechargeCodeRepository codeRepository;
@@ -22,16 +39,19 @@ public class AccountUserService {
     private final JournalRepository journalRepository;
     private final LedgerEntryRepository ledgerEntryRepository;
     private final AdminService adminService;
+    private final JdbcClient jdbcClient;
 
-    public AccountUserService(AccountUserRepository userRepository, RechargeCodeRepository codeRepository, WalletRepository walletRepository, JournalRepository journalRepository, LedgerEntryRepository ledgerEntryRepository, AdminService adminService) {
+    public AccountUserService(AccountUserRepository userRepository, RechargeCodeRepository codeRepository, WalletRepository walletRepository, JournalRepository journalRepository, LedgerEntryRepository ledgerEntryRepository, AdminService adminService, JdbcClient jdbcClient) {
         this.userRepository = userRepository;
         this.codeRepository = codeRepository;
         this.walletRepository = walletRepository;
         this.journalRepository = journalRepository;
         this.ledgerEntryRepository = ledgerEntryRepository;
         this.adminService = adminService;
+        this.jdbcClient = jdbcClient;
     }
 
+    @Transactional
     public Wallet getWalletOf(UUID userId) {
         AccountUser user = userRepository.findByKeycloakId(userId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
@@ -43,6 +63,15 @@ public class AccountUserService {
         wallet.setBalance(balance);
 
         return wallet;
+    }
+
+    @Transactional
+    public List<JournalTransaction> getJournal(Wallet wallet) {
+        return jdbcClient
+                .sql(SQL_JOURNAL)
+                .param(wallet.getId())
+                .query(JournalTransaction.class)
+                .list();
     }
 
     @Transactional

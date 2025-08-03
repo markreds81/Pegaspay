@@ -1,7 +1,7 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-// Update the import path if the file is named keycloakUtility.ts and located in src/utils
 import { prepareHeaders } from "@/utils/keycloakUtility";
-import type { Me, UserRegistration, RegisterResponse } from "./types";
+import type { Me, UserRegistration, RegisterResponse, Wallet, Journal } from "./types";
+import type { get } from "http";
 
 export const pegaspayAPI = createApi({
   reducerPath: "pegaspayAPI",
@@ -13,6 +13,12 @@ export const pegaspayAPI = createApi({
     getMe: builder.query<Me, void>({
       query: () => "/member/me",
     }),
+    getWallet: builder.query<Wallet, void>({
+      query: () => "/member/wallet",
+    }),
+    getJournal: builder.query<Journal[], void>({
+      query: () => "/member/journal",
+    }),
     register: builder.mutation<RegisterResponse, UserRegistration>({
       query: (userData) => ({
         url: "/public/register",
@@ -23,4 +29,4 @@ export const pegaspayAPI = createApi({
   }),
 });
 
-export const { useGetMeQuery, useRegisterMutation } = pegaspayAPI;
+export const { useGetMeQuery, useGetWalletQuery, useGetJournalQuery, useRegisterMutation } = pegaspayAPI;
