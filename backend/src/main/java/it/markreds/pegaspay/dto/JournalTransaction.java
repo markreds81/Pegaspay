@@ -10,6 +10,8 @@ public record JournalTransaction(
         String description,
         BigDecimal credit,
         BigDecimal debit,
+        BigDecimal balance,
+        BigDecimal runningBalance,
         String note
 ) {
 }

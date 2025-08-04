@@ -24,8 +24,10 @@ public class AccountUserService {
             	jo.created_at,
             	jo.reference_id,
             	jo.description,
-            	coalesce(le.credit, 0) as credit,
-                coalesce(le.debit, 0) as debit,
+            	le.credit,
+                le.debit,
+                (le.credit - le.debit) as balance,
+                SUM(le.credit - le.debit) OVER (PARTITION BY le.wallet_id ORDER BY jo.created_at, jo.pkid, le.pkid) AS running_balance,
             	le.note
             from pegaspay.ledger_entries le
             left join pegaspay.journal jo on (jo.pkid = le.journal_id)

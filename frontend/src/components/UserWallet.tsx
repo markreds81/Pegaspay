@@ -1,5 +1,4 @@
 import { useGetWalletQuery } from "@/api/pegaspayAPI";
-import { formatIsoDateTimeToLocale } from "@/utils/dateTimeUtility";
 import { useEffect } from "react";
 
 const UserWallet = () => {

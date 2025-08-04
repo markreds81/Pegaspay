@@ -20,13 +20,14 @@ public class LedgerEntry {
     @JoinColumn(name = "wallet_id")
     private Wallet wallet;
 
+    @Column(nullable = false)
     private BigDecimal debit;
 
     private BigDecimal credit;
 
+    @Column(nullable = false)
     private String note;
 
-    // Constructors, getters, setters
     public LedgerEntry() {
     }
 
@@ -36,6 +37,22 @@ public class LedgerEntry {
         this.debit = debit;
         this.credit = credit;
         this.note = note;
+    }
+
+    @PrePersist
+    protected void onCreate() {
+        if (credit == null) {
+            credit = BigDecimal.ZERO;
+        }
+        if (debit == null) {
+            debit = BigDecimal.ZERO;
+        }
+        if (BigDecimal.ZERO.equals(credit) && BigDecimal.ZERO.equals(debit)) {
+            throw new IllegalArgumentException("Either credit or debit must be greater then 0");
+        }
+        if (credit.compareTo(BigDecimal.ZERO) > 0 && debit.compareTo(BigDecimal.ZERO) > 0) {
+            throw new IllegalArgumentException("Only one of credit or debit must be set");
+        }
     }
 
     public Long getId() {

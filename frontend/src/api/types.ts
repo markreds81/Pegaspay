@@ -23,6 +23,8 @@ export interface Journal {
     description: string;
     credit: number;
     debit: number;
+    balance: number;
+    runningBalance: number;
     note: string;
 }
 
@@ -38,4 +40,9 @@ export interface RegisterResponse {
     activationLink: string;
     activationCode: string;
     message: string;
+}
+
+export interface RedeemResponse {
+    balance: number;
+    currency: string;
 }

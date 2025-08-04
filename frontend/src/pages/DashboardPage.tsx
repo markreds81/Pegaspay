@@ -1,3 +1,4 @@
+import Redeem from "@/components/Redeem";
 import UserAccount from "@/components/UserAccount";
 import UserJournal from "@/components/UserJournal";
 import UserWallet from "@/components/UserWallet";
@@ -18,18 +19,37 @@ const DashboardPage = () => {
                 Benvenuto, <span className="font-semibold">{keycloak.tokenParsed?.preferred_username}</span>
               </p>
             </div>
-            <div className="flex space-x-4">
+            <div className="flex space-x-2">
               <button
                 onClick={() => setCurrentView("wallet")}
                 disabled={currentView === "wallet"}
-                className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium"
+                className={`px-3 py-1 rounded text-xs font-medium transition-colors ${
+                  currentView === "wallet" 
+                    ? "bg-blue-100 text-blue-700 border border-blue-200" 
+                    : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+                }`}
               >
                 Wallet
               </button>
               <button
+                onClick={() => setCurrentView("redeem")}
+                disabled={currentView === "redeem"}
+                className={`px-3 py-1 rounded text-xs font-medium transition-colors ${
+                  currentView === "redeem"
+                    ? "bg-blue-100 text-blue-700 border border-blue-200"
+                    : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+                }`}
+              >
+                Ricarica
+              </button>
+              <button
                 onClick={() => setCurrentView("profile")}
                 disabled={currentView === "profile"}
-                className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium"
+                className={`px-3 py-1 rounded text-xs font-medium transition-colors ${
+                  currentView === "profile" 
+                    ? "bg-blue-100 text-blue-700 border border-blue-200" 
+                    : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+                }`}
               >
                 Profilo
               </button>
@@ -38,6 +58,7 @@ const DashboardPage = () => {
         </div>
         {currentView === "wallet" && <UserWallet />}
         {currentView === "wallet" && <UserJournal />}
+        {currentView === "redeem" && <Redeem />}
         {currentView === "profile" && <UserAccount />}
       </div>
     </div>

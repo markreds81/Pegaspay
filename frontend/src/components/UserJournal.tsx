@@ -12,6 +12,16 @@ const UserJournal = () => {
     }
   }, [isLoading, data, error, refetch]);
 
+  const formatCurrency = (amount: number) => {
+    return `€${amount.toFixed(2)}`;
+  };
+
+  const getCurrencyColor = (amount: number) => {
+    if (amount > 0) return "text-green-600";
+    if (amount < 0) return "text-red-600";
+    return "text-gray-600";
+  };
+
   return (
     <div className="max-w-4xl mx-auto">
       {isLoading ? (
@@ -46,10 +56,10 @@ const UserJournal = () => {
                     Descrizione
                   </th>
                   <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Credito
+                    Saldo
                   </th>
                   <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Debito
+                    Progressivo
                   </th>
                 </tr>
               </thead>
@@ -63,18 +73,14 @@ const UserJournal = () => {
                       {entry.description}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-right">
-                      {entry.credit && (
-                        <span className="text-green-600 font-medium">
-                          +€{entry.credit}
-                        </span>
-                      )}
+                      <span className={`font-medium ${getCurrencyColor(entry.balance)}`}>
+                        {formatCurrency(entry.balance)}
+                      </span>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-right">
-                      {entry.debit && (
-                        <span className="text-red-600 font-medium">
-                          -€{entry.debit}
-                        </span>
-                      )}
+                      <span className={`font-medium ${getCurrencyColor(entry.runningBalance)}`}>
+                        {formatCurrency(entry.runningBalance)}
+                      </span>
                     </td>
                   </tr>
                 ))}
