@@ -46,3 +46,26 @@ export interface RedeemResponse {
     balance: number;
     currency: string;
 }
+
+export interface CreatePaymentRequest {
+  amount: number;
+  currency?: string;
+  description?: string;
+  expiresAt?: string;
+  callbackUrl?: string;
+}
+
+export interface CreatePaymentResponse {
+  referenceId: string;
+}
+
+export interface PaymentIntentSummary {
+  referenceId: string;
+  amount: number;
+  currency: string;
+  description?: string;
+  status: 'CREATED' | 'REQUIRES_CONFIRMATION' | 'PAID' | 'CANCELED' | 'EXPIRED';
+  createdAt: string;
+  paidAt?: string;
+  expiresAt?: string;
+}

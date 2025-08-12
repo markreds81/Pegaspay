@@ -3,7 +3,7 @@ package it.markreds.pegaspay.model;
 import jakarta.persistence.*;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.UUID;
 
 @Entity
@@ -28,7 +28,7 @@ public class Wallet {
     private String currency = "EUR";
 
     @Column(name = "created_at")
-    private LocalDateTime createdAt;
+    private Instant createdAt;
 
     public Wallet() {
     }
@@ -39,7 +39,7 @@ public class Wallet {
 
     @PrePersist
     protected void onCreate() {
-        createdAt = LocalDateTime.now();
+        createdAt = Instant.now();
         referenceId = UUID.randomUUID();
     }
 
@@ -75,7 +75,7 @@ public class Wallet {
         this.currency = currency;
     }
 
-    public LocalDateTime getCreatedAt() {
+    public Instant getCreatedAt() {
         return createdAt;
     }
 }

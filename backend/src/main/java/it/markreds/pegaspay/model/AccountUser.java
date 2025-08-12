@@ -2,7 +2,7 @@ package it.markreds.pegaspay.model;
 
 import jakarta.persistence.*;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.UUID;
 
 @Entity
@@ -35,14 +35,14 @@ public class AccountUser {
     private boolean active = false;
 
     @Column(name = "created_at")
-    private LocalDateTime createdAt;
+    private Instant createdAt;
 
     public AccountUser() {
     }
 
     @PrePersist
     protected void onCreate() {
-        createdAt = LocalDateTime.now();
+        createdAt = Instant.now();
     }
 
     public Long getId() {
@@ -109,7 +109,7 @@ public class AccountUser {
         this.active = active;
     }
 
-    public LocalDateTime getCreatedAt() {
+    public Instant getCreatedAt() {
         return createdAt;
     }
 }

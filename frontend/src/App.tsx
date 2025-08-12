@@ -1,10 +1,11 @@
 import './App.css'
 import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
+import Layout from '@/components/Layout';
 import HomePage from '@/pages/HomePage';
 import DashboardPage from '@/pages/DashboardPage';
 import PrivateRoute from '@/components/PrivateRoute';
 import RegisterPage from '@/pages/RegisterPage';
-import Layout from '@/components/Layout';
+import NewPaymentPage from "@/pages/NewPaymentPage";
 
 function App() {
   return (
@@ -18,6 +19,14 @@ function App() {
             element={
               <PrivateRoute>
                 <DashboardPage />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/newpayment"
+            element={
+              <PrivateRoute>
+                <NewPaymentPage />
               </PrivateRoute>
             }
           />

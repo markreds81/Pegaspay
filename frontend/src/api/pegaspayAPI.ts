@@ -1,6 +1,6 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { prepareHeaders } from "@/utils/keycloakUtility";
-import type { Me, UserRegistration, RegisterResponse, Wallet, Journal, RedeemResponse } from "./types";
+import type { Me, UserRegistration, RegisterResponse, Wallet, Journal, RedeemResponse, CreatePaymentResponse, CreatePaymentRequest, PaymentIntentSummary } from "./types";
 
 export const pegaspayAPI = createApi({
   reducerPath: "pegaspayAPI",
@@ -8,7 +8,7 @@ export const pegaspayAPI = createApi({
     baseUrl: "/be",
     prepareHeaders,
   }),
-  tagTypes: ['journal', 'wallet'],
+  tagTypes: ['journal', 'wallet', 'payment'],
   endpoints: (builder) => ({
     getMe: builder.query<Me, void>({
       query: () => "/member/me",
@@ -36,7 +36,19 @@ export const pegaspayAPI = createApi({
       }),
       invalidatesTags: ['wallet', 'journal'],
     }),
+    createPayment: builder.mutation<CreatePaymentResponse, CreatePaymentRequest>({
+      query: (paymentData) => ({
+        url: "/member/payments",
+        method: "POST",
+        body: paymentData,
+      }),
+      invalidatesTags: ['payment'],
+    }),
+    listPayments: builder.query<PaymentIntentSummary[], number | void>({
+      query: (limit = 10) => `/member/payments?limit=${limit}`,
+      providesTags: ['payment'],
+    }),
   }),
 });
 
-export const { useGetMeQuery, useGetWalletQuery, useGetJournalQuery, useRegisterMutation, useRedeemMutation } = pegaspayAPI;
+export const { useGetMeQuery, useGetWalletQuery, useGetJournalQuery, useRegisterMutation, useRedeemMutation, useCreatePaymentMutation, useListPaymentsQuery } = pegaspayAPI;

@@ -3,7 +3,7 @@ package it.markreds.pegaspay.model;
 import jakarta.persistence.*;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.time.Instant;
 
 @Entity
 @Table(name = "recharge_codes", schema = "pegaspay")
@@ -23,32 +23,32 @@ public class RechargeCode {
     private boolean redeemed = false;
 
     @Column(name = "created_at")
-    private LocalDateTime createdAt;
+    private Instant createdAt;
 
     @Column(name = "redeemed_at")
-    private LocalDateTime redeemedAt;
+    private Instant redeemedAt;
 
     @ManyToOne
     private AccountUser redeemedBy;
 
     @PrePersist
     protected void onCreate() {
-        createdAt = LocalDateTime.now();
+        createdAt = Instant.now();
     }
 
     public Long getId() {
         return id;
     }
 
-    public LocalDateTime getCreatedAt() {
+    public Instant getCreatedAt() {
         return createdAt;
     }
 
-    public LocalDateTime getRedeemedAt() {
+    public Instant getRedeemedAt() {
         return redeemedAt;
     }
 
-    public void setRedeemedAt(LocalDateTime redeemedAt) {
+    public void setRedeemedAt(Instant redeemedAt) {
         this.redeemedAt = redeemedAt;
     }
 

@@ -3,6 +3,7 @@ package it.markreds.pegaspay.controller;
 import it.markreds.pegaspay.dto.*;
 import it.markreds.pegaspay.model.Wallet;
 import it.markreds.pegaspay.service.AccountUserService;
+import it.markreds.pegaspay.service.PaymentService;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
@@ -14,10 +15,12 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/member")
 public class MemberController {
-    private final AccountUserService accountUserService;
+    private final AccountUserService userService;
+    private final PaymentService paymentService;
 
-    public MemberController(AccountUserService accountUserService) {
-        this.accountUserService = accountUserService;
+    public MemberController(AccountUserService userService, PaymentService paymentService) {
+        this.userService = userService;
+        this.paymentService = paymentService;
     }
 
     @GetMapping("/me")
@@ -49,7 +52,7 @@ public class MemberController {
     @GetMapping("/wallet")
     public WalletDto wallet(@AuthenticationPrincipal Jwt principal) {
         UUID userId = UUID.fromString(principal.getSubject());
-        Wallet wallet = accountUserService.getWalletOf(userId);
+        Wallet wallet = userService.getWalletOf(userId);
         return new WalletDto(
                 wallet.getBalance(),
                 wallet.getCurrency(),
@@ -61,21 +64,41 @@ public class MemberController {
     @GetMapping("/journal")
     public List<JournalTransaction> journal(@AuthenticationPrincipal Jwt principal) {
         UUID userId = UUID.fromString(principal.getSubject());
-        Wallet wallet = accountUserService.getWalletOf(userId);
-        return accountUserService.getJournal(wallet);
+        Wallet wallet = userService.getWalletOf(userId);
+        return userService.getJournal(wallet);
     }
 
     @PostMapping("/redeem")
     public RedeemResult redeemCode(@AuthenticationPrincipal Jwt principal, @RequestBody String code) {
         UUID userId = UUID.fromString(principal.getSubject());
-        return accountUserService.redeemCode(userId, code);
+        return userService.redeemCode(userId, code);
     }
 
     @PostMapping("/transfer")
     public TransferResult transfer(@AuthenticationPrincipal Jwt principal, @RequestBody TransferRequest request) {
-        return accountUserService.transfer(
+        return userService.transfer(
                 UUID.fromString(principal.getSubject()),
                 request.toUserEmail(),
                 request.amount());
+    }
+
+    @GetMapping("/payments")
+    public List<PaymentIntentSummary> listMerchantPayments(
+            @AuthenticationPrincipal Jwt merchant,
+            @RequestParam(name = "limit", defaultValue = "10") int limit
+    ) {
+        return paymentService.listForMerchant(merchant, limit);
+    }
+
+    @PostMapping("/payments")
+    public CreatePaymentResponse createPayment(@RequestBody CreatePaymentRequest req,
+                                               @AuthenticationPrincipal Jwt merchant) {
+        return paymentService.createPayment(req, merchant);
+    }
+
+    @PostMapping("/payments/{referenceId}/confirm")
+    public ConfirmPaymentResponse confirmPayment(@PathVariable UUID referenceId,
+                                                 @AuthenticationPrincipal Jwt payer) {
+        return paymentService.confirm(referenceId, payer);
     }
 }

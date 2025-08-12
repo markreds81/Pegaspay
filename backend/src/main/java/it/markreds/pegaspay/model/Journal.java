@@ -2,7 +2,7 @@ package it.markreds.pegaspay.model;
 
 import jakarta.persistence.*;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
 
@@ -20,7 +20,7 @@ public class Journal {
     private String description;
 
     @Column(name = "created_at")
-    private LocalDateTime createdAt;
+    private Instant createdAt;
 
     @OneToMany(mappedBy = "journal", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<LedgerEntry> entries;
@@ -31,7 +31,7 @@ public class Journal {
 
     @PrePersist
     protected void onCreate() {
-        createdAt = LocalDateTime.now();
+        createdAt = Instant.now();
         referenceId = UUID.randomUUID();
     }
 
@@ -51,7 +51,7 @@ public class Journal {
         this.description = description;
     }
 
-    public LocalDateTime getCreatedAt() {
+    public Instant getCreatedAt() {
         return createdAt;
     }
 

@@ -1,19 +1,24 @@
 package it.markreds.pegaspay.controller;
 
+import it.markreds.pegaspay.dto.PublicPaymentDto;
 import it.markreds.pegaspay.dto.UserRegistration;
+import it.markreds.pegaspay.service.PaymentService;
 import it.markreds.pegaspay.service.RegistrationService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/public")
 public class PublicController {
     private final RegistrationService registrationService;
+    private final PaymentService paymentService;
 
-    public PublicController(RegistrationService registrationService) {
+    public PublicController(RegistrationService registrationService, PaymentService paymentService) {
         this.registrationService = registrationService;
+        this.paymentService = paymentService;
     }
 
     @PostMapping("/register")
@@ -35,5 +40,10 @@ public class PublicController {
                 "keycloakSubject", keycloakId,
                 "message", "Activation successful. You can now login with your Keycloak account."
         );
+    }
+
+    @GetMapping("/payments/{referenceId}")
+    public PublicPaymentDto publicPaymentInfo(@PathVariable UUID referenceId) {
+        return paymentService.getPublicInfo(referenceId);
     }
 }
