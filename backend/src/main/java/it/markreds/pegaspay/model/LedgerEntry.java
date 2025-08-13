@@ -39,6 +39,14 @@ public class LedgerEntry {
         this.note = note;
     }
 
+    public static LedgerEntry ofCredit(Journal journal, Wallet wallet, BigDecimal amount, String note) {
+        return new LedgerEntry(journal, wallet, amount, BigDecimal.ZERO, note);
+    }
+
+    public static LedgerEntry ofDebit(Journal journal, Wallet wallet, BigDecimal amount, String note) {
+        return new LedgerEntry(journal, wallet, BigDecimal.ZERO, amount, note);
+    }
+
     @PrePersist
     protected void onCreate() {
         if (credit == null) {

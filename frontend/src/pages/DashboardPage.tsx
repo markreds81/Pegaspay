@@ -1,4 +1,3 @@
-import Redeem from "@/components/Redeem";
 import UserAccount from "@/components/UserAccount";
 import UserJournal from "@/components/UserJournal";
 import UserWallet from "@/components/UserWallet";
@@ -44,17 +43,6 @@ const DashboardPage = () => {
                 Pagamenti
               </button>
               <button
-                onClick={() => setCurrentView("redeem")}
-                disabled={currentView === "redeem"}
-                className={`px-3 py-1 rounded text-xs font-medium transition-colors ${
-                  currentView === "redeem"
-                    ? "bg-blue-100 text-blue-700 border border-blue-200"
-                    : "bg-gray-100 text-gray-600 hover:bg-gray-200"
-                }`}
-              >
-                Ricarica
-              </button>
-              <button
                 onClick={() => setCurrentView("profile")}
                 disabled={currentView === "profile"}
                 className={`px-3 py-1 rounded text-xs font-medium transition-colors ${
@@ -71,7 +59,6 @@ const DashboardPage = () => {
         {currentView === "wallet" && <UserWallet />}
         {currentView === "wallet" && <UserJournal />}
         {currentView === "payments" && <LatestPayments />}
-        {currentView === "redeem" && <Redeem />}
         {currentView === "profile" && <UserAccount />}
       </div>
     </div>

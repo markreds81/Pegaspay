@@ -123,7 +123,7 @@ public class PaymentService {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Insufficient funds");
         }
 
-        BigDecimal fee = feePolicy.feeFor(intent.getAmount()); // es. amount * 0.015
+        BigDecimal fee = feePolicy.feeFor(intent.getAmount());
         BigDecimal netToMerchant = intent.getAmount().subtract(fee);
 
         // Journal
@@ -131,10 +131,10 @@ public class PaymentService {
         j.setDescription("Payment " + intent.getReferenceId());
         journalRepo.save(j);
 
-        // Entries: debit=entrata conto, credit=uscita conto
-        var merchantEntry = new LedgerEntry(j, intent.getMerchantWallet(), netToMerchant, BigDecimal.ZERO, "Sale proceeds");
-        var payerEntry = new LedgerEntry(j, payerWallet, BigDecimal.ZERO, intent.getAmount(), "Payment");
-        var systemEntry = new LedgerEntry(j, adminService.getSystemWallet(), BigDecimal.ZERO, fee, "Fee");
+        // Entries
+        var merchantEntry = LedgerEntry.ofDebit(j, intent.getMerchantWallet(), netToMerchant, "Sale proceeds");
+        var payerEntry = LedgerEntry.ofCredit(j, payerWallet, intent.getAmount(), "Payment");
+        var systemEntry = LedgerEntry.ofDebit(j, adminService.getSystemWallet(), fee, "Fee");
 
         ledgerRepo.save(merchantEntry);
         ledgerRepo.save(payerEntry);

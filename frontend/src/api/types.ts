@@ -69,3 +69,22 @@ export interface PaymentIntentSummary {
   paidAt?: string;
   expiresAt?: string;
 }
+
+export interface PublicPaymentDto {
+  referenceId: string;
+  amount: number;
+  currency: string;
+  description?: string;
+  merchantName: string;
+  expiresAt?: string;  // ISO
+  status: 'CREATED' | 'REQUIRES_CONFIRMATION' | 'PAID' | 'CANCELED' | 'EXPIRED';
+}
+
+export interface ConfirmPaymentResponse {
+  journalReferenceId: string;
+  amount: number;
+  fee: number;
+  currency: string;
+  payerBalanceAfter: number;
+  merchantBalanceAfter: number;
+}

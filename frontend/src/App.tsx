@@ -5,6 +5,7 @@ import HomePage from '@/pages/HomePage';
 import DashboardPage from '@/pages/DashboardPage';
 import PrivateRoute from '@/components/PrivateRoute';
 import RegisterPage from '@/pages/RegisterPage';
+import PayPage from '@/pages/PayPage';
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/register" element={<RegisterPage />} />
+          <Route path="/pay/:referenceId" element={<PayPage />} />
           <Route
             path="/dashboard"
             element={
