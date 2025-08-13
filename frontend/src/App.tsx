@@ -5,7 +5,6 @@ import HomePage from '@/pages/HomePage';
 import DashboardPage from '@/pages/DashboardPage';
 import PrivateRoute from '@/components/PrivateRoute';
 import RegisterPage from '@/pages/RegisterPage';
-import NewPaymentPage from "@/pages/NewPaymentPage";
 
 function App() {
   return (
@@ -19,14 +18,6 @@ function App() {
             element={
               <PrivateRoute>
                 <DashboardPage />
-              </PrivateRoute>
-            }
-          />
-          <Route
-            path="/newpayment"
-            element={
-              <PrivateRoute>
-                <NewPaymentPage />
               </PrivateRoute>
             }
           />
