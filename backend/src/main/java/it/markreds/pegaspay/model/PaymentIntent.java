@@ -29,14 +29,14 @@ public class PaymentIntent {
     private BigDecimal amount;
 
     @Column(length = 3, nullable = false)
-    private String currency;
+    private String currency = "EUR";
 
     @Column(length = 255)
     private String description;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 32)
-    private PaymentStatus status;
+    private PaymentStatus status = PaymentStatus.CREATED;
 
     @Column(name = "created_at")
     private Instant createdAt;
@@ -52,8 +52,6 @@ public class PaymentIntent {
 
     @PrePersist
     protected void onCreate() {
-        currency = "EUR";
-        status = PaymentStatus.CREATED;
         createdAt = Instant.now();
         referenceId = UUID.randomUUID();
     }
