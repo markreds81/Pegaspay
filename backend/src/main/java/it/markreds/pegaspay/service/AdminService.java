@@ -7,6 +7,7 @@ import it.markreds.pegaspay.model.Wallet;
 import it.markreds.pegaspay.repository.AccountUserRepository;
 import it.markreds.pegaspay.repository.RechargeCodeRepository;
 import it.markreds.pegaspay.repository.WalletRepository;
+import it.markreds.pegaspay.util.CodeGenerator;
 import jakarta.annotation.PostConstruct;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,6 +22,7 @@ public class AdminService {
     private static final String SYSTEM_PASSWORD = "changeit";
     private static final String SYSTEM_FIRST_NAME = "System";
     private static final String SYSTEM_LAST_NAME = "Administrator";
+    private static final int CODE_LENGTH = 16;
 
     private static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(AdminService.class);
 
@@ -74,10 +76,7 @@ public class AdminService {
     public RechargeCode generateCode(BigDecimal amount) {
         String code;
         do {
-            code = UUID.randomUUID().toString()
-                    .replaceAll("-", "")
-                    .substring(0, 10)
-                    .toUpperCase();
+            code = CodeGenerator.generateReadableCode(CODE_LENGTH);
         } while (codeRepository.existsByCode(code));
         RechargeCode rc = new RechargeCode();
         rc.setCode(code);

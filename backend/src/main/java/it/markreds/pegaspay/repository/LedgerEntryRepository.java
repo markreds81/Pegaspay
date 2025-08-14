@@ -12,7 +12,7 @@ import java.math.BigDecimal;
 @Repository
 public interface LedgerEntryRepository extends JpaRepository<LedgerEntry, Long> {
     @Query("""
-            SELECT COALESCE(SUM(e.credit), 0) - COALESCE(SUM(e.debit), 0)
+            SELECT COALESCE(SUM(e.debit), 0) - COALESCE(SUM(e.credit), 0)
             FROM LedgerEntry e
             WHERE e.wallet = :wallet
             """)

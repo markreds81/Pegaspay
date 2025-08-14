@@ -24,15 +24,15 @@ public class AccountUserService {
             	jo.created_at,
             	jo.reference_id,
             	jo.description,
+            	le.debit,
             	le.credit,
-                le.debit,
-                (le.credit - le.debit) as balance,
-                SUM(le.credit - le.debit) OVER (PARTITION BY le.wallet_id ORDER BY jo.created_at, jo.pkid, le.pkid) AS running_balance,
+                (le.debit - le.credit) as balance,
+                SUM(le.debit - le.credit) OVER (PARTITION BY le.wallet_id ORDER BY jo.created_at, jo.pkid, le.pkid) AS running_balance,
             	le.note
             from pegaspay.ledger_entries le
             left join pegaspay.journal jo on (jo.pkid = le.journal_id)
             where le.wallet_id = ?
-            order by jo.created_at desc
+            order by jo.created_at desc, jo.pkid desc
             """;
 
     private final AccountUserRepository userRepository;
@@ -99,18 +99,9 @@ public class AccountUserService {
         journal.setDescription("Recharge code redeemed");
         journalRepository.save(journal);
 
-        LedgerEntry debitEntry = new LedgerEntry();
-        debitEntry.setWallet(adminService.getSystemWallet());
-        debitEntry.setJournal(journal);
-        debitEntry.setDebit(rechargeCode.getAmount());
-        debitEntry.setNote("Recharge code redeemed");
-
-        LedgerEntry creditEntry = new LedgerEntry();
-        creditEntry.setWallet(wallet);
-        creditEntry.setJournal(journal);
-        creditEntry.setCredit(rechargeCode.getAmount());
-        creditEntry.setNote("Recharge code redeemed");
-
+        LedgerEntry debitEntry = LedgerEntry.ofDebit(journal, wallet, rechargeCode.getAmount(), "Recharge code redeemed");
+        LedgerEntry creditEntry = LedgerEntry.ofCredit(journal, adminService.getSystemWallet(), rechargeCode.getAmount(), "Recharge code redeemed");
+        
         ledgerEntryRepository.save(debitEntry);
         ledgerEntryRepository.save(creditEntry);
 

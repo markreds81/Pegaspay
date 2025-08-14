@@ -4,6 +4,13 @@ import jakarta.persistence.*;
 
 import java.math.BigDecimal;
 
+/**
+ * LedgerEntry rappresenta una riga della partita doppia.
+ * Convenzione contabile adottata (quella italiana):
+ * - debit = DARE  (aumenta attivo, diminuisce passivo)
+ * - credit = AVERE (diminuisce attivo, aumenta passivo)
+ * Saldo conto = SUM(debit) - SUM(credit)
+ */
 @Entity
 @Table(name = "ledger_entries", schema = "pegaspay")
 public class LedgerEntry {
@@ -23,9 +30,9 @@ public class LedgerEntry {
     @Column(nullable = false)
     private BigDecimal debit;
 
+    @Column(nullable = false)
     private BigDecimal credit;
 
-    @Column(nullable = false)
     private String note;
 
     public LedgerEntry() {
@@ -39,11 +46,11 @@ public class LedgerEntry {
         this.note = note;
     }
 
-    public static LedgerEntry ofCredit(Journal journal, Wallet wallet, BigDecimal amount, String note) {
+    public static LedgerEntry ofDebit(Journal journal, Wallet wallet, BigDecimal amount, String note) {
         return new LedgerEntry(journal, wallet, amount, BigDecimal.ZERO, note);
     }
 
-    public static LedgerEntry ofDebit(Journal journal, Wallet wallet, BigDecimal amount, String note) {
+    public static LedgerEntry ofCredit(Journal journal, Wallet wallet, BigDecimal amount, String note) {
         return new LedgerEntry(journal, wallet, BigDecimal.ZERO, amount, note);
     }
 

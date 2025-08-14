@@ -18,6 +18,7 @@ import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Stream;
 
 @Service
 public class PaymentService {
@@ -135,6 +136,14 @@ public class PaymentService {
         var merchantEntry = LedgerEntry.ofDebit(j, intent.getMerchantWallet(), netToMerchant, "Sale proceeds");
         var payerEntry = LedgerEntry.ofCredit(j, payerWallet, intent.getAmount(), "Payment");
         var systemEntry = LedgerEntry.ofDebit(j, adminService.getSystemWallet(), fee, "Fee");
+
+        // verifica di pareggio
+        var sum = Stream.of(merchantEntry, payerEntry, systemEntry)
+                .map(e -> e.getDebit().subtract(e.getCredit()))
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+        if (sum.compareTo(BigDecimal.ZERO) != 0) {
+            throw new IllegalStateException("Journal not balanced");
+        }
 
         ledgerRepo.save(merchantEntry);
         ledgerRepo.save(payerEntry);

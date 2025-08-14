@@ -8,8 +8,8 @@ public record JournalTransaction(
         UUID referenceId,
         Instant createdAt,
         String description,
-        BigDecimal credit,
         BigDecimal debit,
+        BigDecimal credit,
         BigDecimal balance,
         BigDecimal runningBalance,
         String note
