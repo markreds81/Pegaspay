@@ -13,7 +13,7 @@ const UserJournal = () => {
   }, [isLoading, data, error, refetch]);
 
   const formatCurrency = (amount: number) => {
-    return `€${amount.toFixed(2)}`;
+    return `€ ${amount.toFixed(2)}`;
   };
 
   const getCurrencyColor = (amount: number) => {
@@ -64,12 +64,12 @@ const UserJournal = () => {
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
-                {data.map((entry, index) => (
+                {data.length > 0 ? data.map((entry, index) => (
                   <tr key={index} className="hover:bg-gray-50">
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                       {formatIsoDateTimeToLocale(entry.createdAt)}
                     </td>
-                    <td className="px-6 py-4 text-sm text-gray-900">
+                    <td className="px-6 py-4 whitespace-nowrap text-left text-sm text-gray-900">
                       {entry.description}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-right">
@@ -83,7 +83,13 @@ const UserJournal = () => {
                       </span>
                     </td>
                   </tr>
-                ))}
+                )) : (
+                  <tr>
+                    <td colSpan={4} className="px-6 py-4 text-sm text-gray-900 text-center">
+                      Nessun movimento trovato.
+                    </td>
+                  </tr>
+                )}
               </tbody>
             </table>
           </div>

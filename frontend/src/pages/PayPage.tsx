@@ -39,8 +39,8 @@ const PayPage = () => {
 
   if (isLoading) {
     return (
-      <div className="min-h-full bg-gray-50 p-8">
-        <div className="max-w-2xl mx-auto">
+      <div className="flex items-center justify-center p-8 min-h-full">
+        <div className="max-w-2xl w-full">
           <div className="bg-white rounded-lg shadow p-6">
             <div className="flex items-center justify-center gap-2 text-gray-600">
               <Loader2 className="h-5 w-5 animate-spin" />
@@ -54,8 +54,8 @@ const PayPage = () => {
 
   if (isError || !data) {
     return (
-      <div className="min-h-full bg-gray-50 p-8">
-        <div className="max-w-2xl mx-auto">
+      <div className="flex items-center justify-center p-8 min-h-full">
+        <div className="max-w-2xl w-full">
           <div className="bg-red-50 border border-red-200 rounded-lg p-6">
             <div className="flex items-center gap-2 text-red-600">
               <AlertTriangle className="h-5 w-5" />
@@ -74,9 +74,9 @@ const PayPage = () => {
   const amountFmt = new Intl.NumberFormat('it-IT', { style: 'currency', currency: data.currency }).format(data.amount);
 
   return (
-    <div className="min-h-full bg-gray-50 p-8">
+    <div className="flex items-center justify-center p-8 min-h-full">
       {initialized && (
-        <div className="max-w-2xl mx-auto">
+        <div className="max-w-2xl w-full">
           <div className="bg-white rounded-lg shadow p-6 space-y-6">
             {/* Header */}
             <div className="text-center">

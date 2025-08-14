@@ -5,7 +5,7 @@ function HomePage() {
   const { keycloak, initialized } = useKeycloak();
 
   return (
-    <div className="bg-gradient-to-br from-blue-50 to-indigo-100 min-h-full flex flex-col items-center justify-center p-8">
+    <div className="bg-gradient-to-br from-blue-50 to-indigo-100 flex flex-col items-center justify-center p-8 min-h-full">
       <div className="text-center max-w-4xl mx-auto">
         <h1 className="text-5xl font-bold text-gray-800 mb-6">Benvenuto su Pegaspay</h1>
         <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">

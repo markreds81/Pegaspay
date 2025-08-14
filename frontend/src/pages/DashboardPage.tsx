@@ -9,7 +9,7 @@ const DashboardPage = () => {
   const [currentView, setCurrentView] = useState("wallet");
 
   return (
-    <div className="min-h-full bg-gray-50 p-8">
+    <div className="p-8">
       <div className="max-w-4xl mx-auto">
         <div className="bg-white rounded-lg shadow p-6 mb-6">
           <div className="flex justify-between items-center">

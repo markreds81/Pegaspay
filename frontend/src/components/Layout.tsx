@@ -9,9 +9,9 @@ function Layout({ children }: LayoutProps) {
   const { keycloak, initialized } = useKeycloak();
 
   return (
-    <div className="min-h-screen flex flex-col bg-gray-50">
+    <div className="fixed inset-0 flex flex-col">
       {/* Header */}
-      <header className="bg-white shadow-sm border-b">
+      <header className="bg-white shadow-sm border-b flex-shrink-0 z-10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             {/* Logo */}
@@ -69,12 +69,12 @@ function Layout({ children }: LayoutProps) {
       </header>
 
       {/* Main Content */}
-      <main className="flex-1">
+      <main className="flex-1 overflow-y-auto bg-gray-50">
         {children}
       </main>
 
       {/* Footer */}
-      <footer className="bg-gray-800 text-white">
+      <footer className="bg-gray-800 text-white flex-shrink-0 z-10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div className="flex flex-col md:flex-row justify-between items-center">
             <div className="text-sm text-gray-300">

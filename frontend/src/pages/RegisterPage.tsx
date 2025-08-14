@@ -33,7 +33,7 @@ function RegisterPage() {
   };
 
   return (
-    <div className="min-h-full bg-gradient-to-br from-green-50 to-emerald-100 flex flex-col items-center justify-center p-8">
+    <div className="bg-gradient-to-br from-green-50 to-emerald-100 flex flex-col items-center justify-center p-8 min-h-full">
       <div className="bg-white p-8 rounded-lg shadow-lg max-w-md w-full">
         <h1 className="text-3xl font-bold text-gray-800 mb-6 text-center">Registrazione</h1>
         <p className="text-gray-600 mb-6 text-center">

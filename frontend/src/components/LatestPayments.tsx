@@ -107,10 +107,10 @@ const LatestPayments = ({ limit = 10 }: { limit?: number }) => {
                     const paymentUrl = `${base}/pay/${p.referenceId}`;
                     return (
                       <tr key={p.referenceId} className="hover:bg-gray-50">
-                        <td className="px-6 py-4 text-sm text-gray-900">
+                        <td className="px-6 py-4 whitespace-nowrap text-left text-sm text-gray-900">
                           {p.description || "-"}
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 font-medium">
+                        <td className="px-6 py-4 whitespace-nowrap text-left text-sm text-gray-900 font-medium">
                           {formatAmount(p.amount, p.currency)}
                         </td>
                         <td className="px-6 py-4 text-sm text-gray-900">

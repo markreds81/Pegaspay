@@ -15,8 +15,8 @@ const UserWallet = () => {
   }, [isLoading, data, error, refetch]);
 
   const handleRechargeCompleted = () => {
-    setShowRechargeForm(false); // Torna al wallet
-    refetch(); // Aggiorna i dati del wallet
+    setShowRechargeForm(false);
+    refetch();
   };
 
   return (
@@ -73,11 +73,11 @@ const UserWallet = () => {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                   <p className="text-sm text-gray-600">Saldo:</p>
-                  <p className="font-medium text-gray-900 bg-gray-50 p-2 rounded">{data.balance || "N/A"}</p>
+                  <p className="font-medium text-gray-900 bg-gray-50 p-2 rounded">{data.balance.toFixed(2) || "0.00"}</p>
                 </div>
                 <div>
                   <p className="text-sm text-gray-600">Valuta:</p>
-                  <p className="font-medium text-gray-900 bg-gray-50 p-2 rounded">{data.currency || "N/A"}</p>
+                  <p className="font-medium text-gray-900 bg-gray-50 p-2 rounded">{data.currency || "EUR"}</p>
                 </div>
               </div>
             ) : (
